@@ -15,7 +15,16 @@ class UsersRepository {
   }
 
   async findAll() {
-    return prisma.user.findMany();
+    return prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        cpf: true,
+        status: true,
+        phone: true,
+      },
+    });
   }
 }
 
