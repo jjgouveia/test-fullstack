@@ -1,5 +1,6 @@
 import "dotenv/config";
 import * as express from "express";
+import { UserRoutes } from "./routes/user.routes";
 
 class App {
   public app: express.Application;
@@ -11,9 +12,9 @@ class App {
 
     this.config();
 
-    this.app.get("/oi", (req, res) => {
-      res.status(418).json({ message: "Como vai você?" });
-    });
+    // this.app.get("/oi", (req, res) => {
+    //   res.status(418).json({ message: "Como vai você?" });
+    // });
   }
 
   private config(): void {
@@ -27,8 +28,11 @@ class App {
       next();
     };
 
+    const userRoutes = new UserRoutes().routes();
+
     this.app.use(express.json());
     this.app.use(accessControl);
+    this.app.use("/users", userRoutes);
   }
 
   public start(): void {
