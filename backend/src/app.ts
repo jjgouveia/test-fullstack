@@ -1,5 +1,7 @@
 import "dotenv/config";
 import * as express from "express";
+import rateLimit from "express-rate-limit";
+import helmet from "helmet";
 import { UserRoutes } from "./routes/user.routes";
 
 class App {
@@ -32,6 +34,13 @@ class App {
 
     this.app.use(express.json());
     this.app.use(accessControl);
+    this.app.use(helmet());
+    this.app.use(
+      rateLimit({
+        windowMs: 15 * 60 * 1000 /* 15 minutos */,
+        max: 100 /* 100 requisições */,
+      })
+    );
     this.app.use("/users", userRoutes);
   }
 
