@@ -7,3 +7,5 @@ export interface ICreate {
   status: StatusEnum;
   phone: string;
 }
+
+export interface IUpdate extends ICreate {}
