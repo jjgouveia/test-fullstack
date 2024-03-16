@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { HttpStatus } from "../enums/httpStatus.enum";
 import { UserService } from "../services/user.service";
 
 class UserController {
@@ -20,7 +21,7 @@ class UserController {
         phone,
       });
 
-      return response.status(201).json(user);
+      return response.status(HttpStatus.CREATED).json(user);
     } catch (error: any) {
       return response.status(error.status).json({ message: error.message });
     }
@@ -30,7 +31,7 @@ class UserController {
     try {
       const users = await this.userService.findAll();
 
-      return response.status(200).json(users);
+      return response.status(HttpStatus.OK).json(users);
     } catch (error: any) {
       return response.status(error.status).json({ message: error.message });
     }
@@ -50,7 +51,7 @@ class UserController {
         phone,
       });
 
-      return response.status(202).json({
+      return response.status(HttpStatus.ACCEPTED).json({
         message: "Usuário atualizado com sucesso",
         id: user,
       });
@@ -65,7 +66,7 @@ class UserController {
     try {
       await this.userService.delete({ id });
 
-      return response.status(202).json({
+      return response.status(HttpStatus.ACCEPTED).json({
         message: "Usuário deletado com sucesso",
       });
     } catch (error: any) {
