@@ -43,7 +43,7 @@ class UserService {
     }
   }
 
-  async update(id: string, { name, email, cpf, status, phone }: IUpdate) {
+  async update({ id, name, email, cpf, status, phone }: IUpdate) {
     try {
       const data = UserValidator.validateUpdateUser({
         id,
@@ -62,7 +62,9 @@ class UserService {
         phone: data.phone,
       });
     } catch (error: any) {
-      throw new BadRequestException(error.message);
+      if (error.code === "P2002") {
+        throw new BadRequestException("Email ou CPF já cadastrado no sistema");
+      }
     }
   }
 }
