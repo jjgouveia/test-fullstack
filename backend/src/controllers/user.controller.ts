@@ -35,6 +35,29 @@ class UserController {
       return response.status(error.status).json({ message: error.message });
     }
   }
+
+  async update(request: Request, response: Response) {
+    const { id } = request.params;
+    const { name, email, cpf, status, phone } = request.body;
+
+    try {
+      const user = await this.userService.update({
+        id,
+        name,
+        email,
+        cpf,
+        status,
+        phone,
+      });
+
+      return response.status(202).json({
+        message: "Usuário atualizado com sucesso",
+        id: user,
+      });
+    } catch (error: any) {
+      return response.status(error.status).json({ message: error.message });
+    }
+  }
 }
 
 export { UserController };
