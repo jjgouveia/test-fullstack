@@ -8,4 +8,6 @@ export interface ICreate {
   phone: string;
 }
 
-export interface IUpdate extends ICreate {}
+export interface IUpdate extends ICreate {
+  id: string;
+}
