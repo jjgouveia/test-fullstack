@@ -1,7 +1,7 @@
 import StatusEnum from "../enums/status.enum";
 
 export interface ICreate {
-  name?: string;
+  name: string;
   email: string;
   cpf: string;
   status: StatusEnum;
