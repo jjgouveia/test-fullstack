@@ -1,5 +1,5 @@
 import prisma from "../persistence/prisma";
-import { ICreate, IUpdate } from "./../interfaces/user.interface";
+import { ICreate, IDelete, IUpdate } from "./../interfaces/user.interface";
 
 class UsersRepository {
   async create({ name, email, cpf, status, phone }: ICreate) {
@@ -47,6 +47,14 @@ class UsersRepository {
       },
       select: {
         id: true,
+      },
+    });
+  }
+
+  async delete({ id }: IDelete) {
+    return await prisma.user.delete({
+      where: {
+        id,
       },
     });
   }
