@@ -58,6 +58,20 @@ class UserController {
       return response.status(error.status).json({ message: error.message });
     }
   }
+
+  async delete(request: Request, response: Response) {
+    const { id } = request.params;
+
+    try {
+      await this.userService.delete({ id });
+
+      return response.status(202).json({
+        message: "Usuário deletado com sucesso",
+      });
+    } catch (error: any) {
+      return response.status(error.status).json({ message: error.message });
+    }
+  }
 }
 
 export { UserController };
