@@ -6,8 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx -y tsc",
+    "prisma": "npx prisma generate",
     "start": "node ./dist/server.js",
-    "dev": " npm run build && node ./dist/server.js --watch"
+    "dev": " npm run build && node ./dist/server.js --watch",
+    "prestart": "npm run build && npm run prisma && npm run start"
   },
   "keywords": [],
   "author": "",
