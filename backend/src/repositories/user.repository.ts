@@ -1,5 +1,5 @@
 import prisma from "../persistence/prisma";
-import { ICreate } from "./../interfaces/user.interface";
+import { ICreate, IUpdate } from "./../interfaces/user.interface";
 
 class UsersRepository {
   async create({ name, email, cpf, status, phone }: ICreate) {
@@ -23,6 +23,21 @@ class UsersRepository {
         cpf: true,
         status: true,
         phone: true,
+      },
+    });
+  }
+
+  async update(id: string, { name, email, cpf, status, phone }: IUpdate) {
+    return prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        name,
+        email,
+        cpf,
+        status,
+        phone,
       },
     });
   }
