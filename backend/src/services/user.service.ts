@@ -1,6 +1,6 @@
 import { UsersRepository } from "../repositories/user.repository";
 import { BadRequestException } from "./../exceptions/badRequest.exception";
-import { ICreate } from "./../interfaces/user.interface";
+import { ICreate, IUpdate } from "./../interfaces/user.interface";
 import { UserValidator } from "./validators/user.validator";
 
 class UserService {
@@ -38,6 +38,29 @@ class UserService {
   async findAll() {
     try {
       return await this.userRepository.findAll();
+    } catch (error: any) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async update(id: string, { name, email, cpf, status, phone }: IUpdate) {
+    try {
+      const data = UserValidator.validateUpdateUser({
+        id,
+        name,
+        email,
+        cpf,
+        status,
+        phone,
+      });
+      return await this.userRepository.update({
+        id,
+        name: data.name,
+        email: data.email,
+        cpf: data.cpf,
+        status: data.status,
+        phone: data.phone,
+      });
     } catch (error: any) {
       throw new BadRequestException(error.message);
     }
