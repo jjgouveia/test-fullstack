@@ -11,3 +11,5 @@ export interface ICreate {
 export interface IUpdate extends Partial<ICreate> {
   id: string;
 }
+
+export interface IDelete extends Pick<IUpdate, "id"> {}
