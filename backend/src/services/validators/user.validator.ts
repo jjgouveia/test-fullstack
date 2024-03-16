@@ -39,14 +39,6 @@ class UserValidator {
     }
   };
 
-  static validateUpdateUser = (data: IUpdate) => {
-    try {
-      return this.updateUserSchema.parse(data);
-    } catch (error: any) {
-      throw new BadRequestException(error.errors[0].message);
-    }
-  };
-
   static updateUserSchema = z.object({
     id: z.string().uuid(),
     name: z
@@ -77,6 +69,22 @@ class UserValidator {
       ])
       .optional(),
   });
+
+  static validateUpdateUser = (data: IUpdate) => {
+    try {
+      return this.updateUserSchema.parse(data);
+    } catch (error: any) {
+      throw new BadRequestException(error.errors[0].message);
+    }
+  };
+
+  static validateId = (id: string) => {
+    try {
+      return z.string().uuid().parse(id);
+    } catch (error: any) {
+      throw new BadRequestException("ID inválido");
+    }
+  };
 }
 
 export { UserValidator };
