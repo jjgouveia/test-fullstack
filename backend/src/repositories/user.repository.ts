@@ -3,7 +3,7 @@ import { ICreate, IUpdate } from "./../interfaces/user.interface";
 
 class UsersRepository {
   async create({ name, email, cpf, status, phone }: ICreate) {
-    return prisma.user.create({
+    return await prisma.user.create({
       data: {
         name,
         email,
@@ -15,7 +15,7 @@ class UsersRepository {
   }
 
   async findAll() {
-    return prisma.user.findMany({
+    return await prisma.user.findMany({
       select: {
         id: true,
         name: true,
@@ -28,7 +28,7 @@ class UsersRepository {
   }
 
   async update({ id, name, email, cpf, status, phone }: IUpdate) {
-    return prisma.user.update({
+    await prisma.user.update({
       where: {
         id,
       },
@@ -38,6 +38,15 @@ class UsersRepository {
         cpf,
         status,
         phone,
+      },
+    });
+
+    return await prisma.user.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
       },
     });
   }
