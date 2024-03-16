@@ -1,5 +1,8 @@
+import { HttpStatus } from "../enums/httpStatus.enum";
 import { UsersRepository } from "../repositories/user.repository";
 import { BadRequestException } from "./../exceptions/badRequest.exception";
+import { ConflictRequestException } from "./../exceptions/conflict.exception";
+import { InternalServerErrorException } from "./../exceptions/internalServerError.exception";
 import { NotFoundException } from "./../exceptions/notFound.exception";
 import { ICreate, IDelete, IUpdate } from "./../interfaces/user.interface";
 import { UserValidator } from "./validators/user.validator";
@@ -29,10 +32,16 @@ class UserService {
       });
     } catch (error: any) {
       if (error.code === "P2002") {
-        throw new BadRequestException("Email ou CPF já cadastrado no sistema");
-      } else {
+        throw new ConflictRequestException(
+          "Email ou CPF já cadastrado no sistema"
+        );
+      }
+
+      if (error.status == HttpStatus.BAD_REQUEST) {
         throw new BadRequestException(error.message);
       }
+
+      throw new InternalServerErrorException(error.message);
     }
   }
 
@@ -54,6 +63,7 @@ class UserService {
         status,
         phone,
       });
+
       return await this.userRepository.update({
         id,
         name: data.name,
@@ -63,27 +73,34 @@ class UserService {
         phone: data.phone,
       });
     } catch (error: any) {
-      if (error.code === "P2002") {
-        throw new BadRequestException("Email ou CPF já cadastrado no sistema");
+      if (error.code === "P2002" || error.status == HttpStatus.BAD_REQUEST) {
+        throw new ConflictRequestException(
+          "Email ou CPF já cadastrado no sistema"
+        );
       }
       if (error.code === "P2025") {
         throw new NotFoundException("Usuário não encontrado");
       }
 
-      throw new BadRequestException(error.message);
+      throw new InternalServerErrorException(error.message);
     }
   }
 
   async delete({ id }: IDelete) {
     try {
       const data = UserValidator.validateId(id);
+
       return await this.userRepository.delete({ id: data });
     } catch (error: any) {
       if (error.code === "P2025") {
         throw new NotFoundException("Usuário não encontrado");
       }
 
-      throw new BadRequestException(error.message);
+      if (error.status == HttpStatus.BAD_REQUEST) {
+        throw new BadRequestException(error.message);
+      }
+
+      throw new InternalServerErrorException(error.message);
     }
   }
 }
