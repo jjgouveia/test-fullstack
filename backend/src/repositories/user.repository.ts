@@ -27,7 +27,7 @@ class UsersRepository {
     });
   }
 
-  async update(id: string, { name, email, cpf, status, phone }: IUpdate) {
+  async update({ id, name, email, cpf, status, phone }: IUpdate) {
     return prisma.user.update({
       where: {
         id,
