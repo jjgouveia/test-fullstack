@@ -13,10 +13,6 @@ class App {
     this.port = process.env.PORT || "3000";
 
     this.config();
-
-    // this.app.get("/oi", (req, res) => {
-    //   res.status(418).json({ message: "Como vai você?" });
-    // });
   }
 
   private config(): void {
