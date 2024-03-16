@@ -1,7 +1,7 @@
 import { z } from "zod";
 import StatusEnum from "../../enums/status.enum";
 import { BadRequestException } from "../../exceptions/badRequest.exception";
-import { ICreate } from "../../interfaces/user.interface";
+import { ICreate, IUpdate } from "../../interfaces/user.interface";
 
 class UserValidator {
   static createUserSchema = z.object({
@@ -39,7 +39,7 @@ class UserValidator {
     }
   };
 
-  static validateUpdateUser = (data: ICreate) => {
+  static validateUpdateUser = (data: IUpdate) => {
     try {
       return this.updateUserSchema.parse(data);
     } catch (error: any) {
@@ -48,6 +48,7 @@ class UserValidator {
   };
 
   static updateUserSchema = z.object({
+    id: z.string().uuid(),
     name: z
       .string()
       .min(3, { message: "O nome está muito curto" })
