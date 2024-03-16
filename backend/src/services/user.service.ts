@@ -1,6 +1,7 @@
 import { UsersRepository } from "../repositories/user.repository";
 import { BadRequestException } from "./../exceptions/badRequest.exception";
-import { ICreate, IUpdate } from "./../interfaces/user.interface";
+import { NotFoundException } from "./../exceptions/notFound.exception";
+import { ICreate, IDelete, IUpdate } from "./../interfaces/user.interface";
 import { UserValidator } from "./validators/user.validator";
 
 class UserService {
@@ -65,6 +66,24 @@ class UserService {
       if (error.code === "P2002") {
         throw new BadRequestException("Email ou CPF já cadastrado no sistema");
       }
+      if (error.code === "P2025") {
+        throw new NotFoundException("Usuário não encontrado");
+      }
+
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  async delete({ id }: IDelete) {
+    try {
+      const data = UserValidator.validateId(id);
+      return await this.userRepository.delete({ id: data });
+    } catch (error: any) {
+      if (error.code === "P2025") {
+        throw new NotFoundException("Usuário não encontrado");
+      }
+
+      throw new BadRequestException(error.message);
     }
   }
 }
