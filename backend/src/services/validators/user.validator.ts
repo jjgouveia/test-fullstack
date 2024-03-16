@@ -40,7 +40,6 @@ class UserValidator {
   };
 
   static updateUserSchema = z.object({
-    id: z.string().uuid(),
     name: z
       .string()
       .min(3, { message: "O nome está muito curto" })
