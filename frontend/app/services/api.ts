@@ -20,6 +20,10 @@ export const getCustomers = async () => {
   return await api.get("users");
 };
 
+export const getCustomer = async (id: string) => {
+  return await api.get(`users/${id}`);
+};
+
 export const updateCustomer = async (id: string, data: CreateCustomerProps) => {
   try {
     return await api.patch(`users/${id}`, data);

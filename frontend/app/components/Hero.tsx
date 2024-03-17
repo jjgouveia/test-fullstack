@@ -1,20 +1,30 @@
 "use client";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { getCustomer } from "../services/api";
+import CustomerProps from "../types/customer.type";
 import Button from "./Button";
-import CreateCustomerForm, { CreateCustomerFormProps } from "./ClientUserForm";
+import { CreateCustomerFormProps } from "./ClientUserForm";
 
-interface CustomerProps extends Partial<CreateCustomerFormProps> {
+interface CustomerProps2 extends Partial<CreateCustomerFormProps> {
   openCreateArea?: boolean;
 }
 
 export default function Hero({
   openCreateArea,
   setOpenCreateArea,
-  users,
-  setUsers,
-}: CustomerProps) {
+}: CustomerProps2) {
   const router = usePathname();
+
+  const [customer, setCustomer] = useState<CustomerProps>();
+  const id = router.split("/")[2];
+
+  useEffect(() => {
+    getCustomer(id).then((response: any) => {
+      setCustomer(response.data);
+    });
+  }, [id]);
 
   return (
     <>
@@ -44,7 +54,7 @@ export default function Hero({
           <div className="flex justify-between items-center">
             <Button
               onClick={() => {
-                setOpenCreateArea(!openCreateArea);
+                setOpenCreateArea && setOpenCreateArea(!openCreateArea);
               }}
             >
               {openCreateArea ? "Cancelar" : "Criar Cliente"}
@@ -52,13 +62,58 @@ export default function Hero({
           </div>
         </div>
       </div>
-      <div id="create_user_container" className="mt-8">
-        {openCreateArea ? (
-          <CreateCustomerForm
-            users={users}
-            setUsers={setUsers}
-            setOpenCreateArea={setOpenCreateArea}
-          />
+      <div id="container" className="flex justify-between">
+        {customer ? (
+          <form className="flex flex-col gap-4 w-full">
+            <div className="flex flex-col gap-4">
+              <label htmlFor="name" className="text-gray-500">
+                Nome
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={customer.name}
+                disabled
+              />
+            </div>
+            <div className="flex flex-col gap-4">
+              <label htmlFor="email" className="text-gray-500">
+                E-mail
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={customer.email}
+                disabled
+              />
+            </div>
+            <div className="flex flex-col gap-4">
+              <label htmlFor="cpf" className="text-gray-500">
+                CPF
+              </label>
+              <input
+                type="text"
+                id="cpf"
+                name="cpf"
+                value={customer.cpf}
+                disabled
+              />
+            </div>
+            <div className="flex flex-col gap-4">
+              <label htmlFor="phone" className="text-gray-500">
+                Telefone
+              </label>
+              <input
+                type="text"
+                id="phone"
+                name="phone"
+                value={customer.phone}
+                disabled
+              />
+            </div>
+          </form>
         ) : null}
       </div>
     </>
