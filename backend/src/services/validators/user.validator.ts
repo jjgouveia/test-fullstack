@@ -11,7 +11,7 @@ class UserValidator {
       })
       .min(3, { message: "O nome está muito curto" })
       .max(78, { message: "O nome está muito longo" })
-      .regex(/^[a-zA-Z\s]+$/, {
+      .regex(/^[a-zA-Z\u00C0-\u00FF\s]+$/, {
         message: "Nome deve conter somente letras",
       }),
     email: z.string().email(),
@@ -42,7 +42,7 @@ class UserValidator {
       .string()
       .min(3, { message: "O nome está muito curto" })
       .max(78, { message: "O nome está muito longo" })
-      .regex(/^[a-zA-Z\s]+$/, {
+      .regex(/^[a-zA-Z\u00C0-\u00FF\s]+$/, {
         message: "Nome deve conter somente letras",
       })
       .optional(),
