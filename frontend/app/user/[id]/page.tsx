@@ -1,9 +1,21 @@
 "use client";
+import CreateCustomerForm from "@/app/components/ClientUserForm";
 import Hero from "@/app/components/Hero";
-import { useState } from "react";
+import LoadingDots from "@/app/components/LoadingDots";
+import { getCustomer } from "@/app/services/api";
+import CustomerProps from "@/app/types/customer.type";
+import { useEffect, useState } from "react";
 
 export default function EditCustomer({ params }: { params: { id: string } }) {
   const { id } = params;
+    const [customer, setCustomer] = useState<CustomerProps>();
+
+  useEffect(() => {
+    getCustomer(id).then((response: any) => {
+      setCustomer(response.data);
+    });
+  }, [id]);
+
   const [openCreateArea, setOpenCreateArea] = useState(false);
 
   return (
@@ -14,6 +26,20 @@ export default function EditCustomer({ params }: { params: { id: string } }) {
             openCreateArea={openCreateArea}
             setOpenCreateArea={setOpenCreateArea}
           />
+          {
+            <div id="user_details_container" className="mt-8">
+              {
+                customer ? (
+                  <CreateCustomerForm
+                    customer={customer}
+                    setCustumer={setCustomer}
+                    editMode={!openCreateArea}
+                    setOpenCreateArea={setOpenCreateArea}
+                  />
+                ) : <LoadingDots />
+              }
+            </div>
+          }
         </main>
       </div>
     </div>
