@@ -18,9 +18,12 @@ class UserValidator {
     cpf: z.string().regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, {
       message: "CPF deve ter o formato 999.999.999-99",
     }),
-    phone: z.string().regex(/^\(\d{2}\) \d{5}-\d{4}$/, {
-      message: "Telefone deve ter o formato (99) 99999-9999",
-    }),
+    phone: z
+      .string()
+      .regex(/^\(\d{2}\) (9\d{4}-\d{4}|[1,2,3,4,5,6,7,8]\d{3}-\d{4}$)/, {
+        message:
+          "Telefone deve ter o formato válido no Brasil. Ex: (99) 99999-9999 ou (99) 3999-9999",
+      }),
     status: z.enum([
       StatusEnum.ACTIVE,
       StatusEnum.INACTIVE,
@@ -55,8 +58,9 @@ class UserValidator {
       .optional(),
     phone: z
       .string()
-      .regex(/^\(\d{2}\) \d{5}-\d{4}$/, {
-        message: "Telefone deve ter o formato (99) 99999-9999",
+      .regex(/^\(\d{2}\) (9\d{4}-\d{4}|[1,2,3,4,5,6,7,8]\d{3}-\d{4}$)/, {
+        message:
+          "Telefone deve ter o formato válido no Brasil. Ex: (99) 99999-9999 ou (99) 3999-9999",
       })
       .optional(),
     status: z

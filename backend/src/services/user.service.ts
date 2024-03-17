@@ -86,11 +86,15 @@ class UserService {
         phone: data.phone,
       });
     } catch (error: any) {
-      if (error.code === "P2002" || error.status == HttpStatus.BAD_REQUEST) {
+      if (error.code === "P2002") {
         throw new ConflictRequestException(
           "Email ou CPF já cadastrado no sistema"
         );
       }
+      if (error.status == HttpStatus.BAD_REQUEST) {
+        throw new BadRequestException(error.message);
+      }
+
       if (error.code === "P2025") {
         throw new NotFoundException("Usuário não encontrado");
       }
