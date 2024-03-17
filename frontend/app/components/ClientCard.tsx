@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { deleteCustomer } from "../services/api";
@@ -49,7 +50,7 @@ export default function ClientCard({
           <span className="w-full text-gray-500">{phone}</span>
         </div>
       </div>
-      <div className="flex items-center gap-4 max-w-80 min-w-32 break-words border border-red-500">
+      <div className="flex items-center gap-4 max-w-80 min-w-32 break-words">
         <div className="flex flex-col items-center align-middle">
           <h4 className="text-gray-500 text-left">
             {status === StatusEnum.Ativo
@@ -63,7 +64,12 @@ export default function ClientCard({
         </div>
       </div>
       <div className="flex gap-4">
-        <Button>Editar</Button>
+        <Link
+          className="p-2 bg-amber-600 text-white rounded-md"
+          href={`/user/${id}`}
+        >
+          Editar
+        </Link>
         <Button
           className="p-2 bg-red-600 text-white rounded-md"
           onClick={async (event: any) => {

@@ -5,7 +5,7 @@ import { createCustomer } from "../services/api";
 import StatusEnum from "../types/userStatus.enum";
 import Button from "./Button";
 
-type CreateCustomerFormProps = {
+export type CreateCustomerFormProps = {
   users: any[];
   setUsers: (users: any[]) => void;
   setOpenCreateArea: (value: boolean) => void;
@@ -159,6 +159,7 @@ export default function CreateCustomerForm({
           Cancelar
         </Button>
       </div>
+      <hr className="my-8" />
     </form>
   );
 }

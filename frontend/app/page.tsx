@@ -1,24 +1,15 @@
 "use client";
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { getCustomers } from "./services/api";
 
-import Button from "./components/Button";
 import ClientCard from "./components/ClientCard";
-import CreateCustomerForm from "./components/ClientUserForm";
-import Header from "./components/Header";
+import Hero from "./components/Hero";
 import LoadingDots from "./components/LoadingDots";
 import CustomerProps from "./types/customer.type";
 
 export default function Home() {
   const [users, setUsers] = useState<CustomerProps[]>([]);
   const [openCreateArea, setOpenCreateArea] = useState(false);
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm();
 
   useEffect(() => {
     getCustomers().then((response) => {
@@ -27,10 +18,9 @@ export default function Home() {
   }, []);
   return (
     <div className="flex w-full min-h-screen flex-col">
-      <Header />
       <div className="flex w-full flex-1 justify-center mt-0 p-4 sm:mt-32 sm:p-0">
         <main className="flex flex-col w-full sm:w-4/5 p-4 bg-gray-100 rounded-lg shadow-lg">
-          <div className="flex justify-center sm:justify-start align-middle">
+          {/* <div className="flex justify-center sm:justify-start align-middle">
             <Image
               className="mr-2 mt-2"
               src="/users-group.svg"
@@ -39,7 +29,7 @@ export default function Home() {
               height={32}
             />
             <h2 className="pt-2 text-4xl font-bold text-gray-900">
-              Lista de Clientes
+              Painel de Clientes
             </h2>
           </div>
           <hr className="my-8" />
@@ -72,7 +62,13 @@ export default function Home() {
                 setOpenCreateArea={setOpenCreateArea}
               />
             ) : null}
-          </div>
+          </div> */}
+          <Hero
+            openCreateArea={openCreateArea}
+            setOpenCreateArea={setOpenCreateArea}
+            users={users}
+            setUsers={setUsers}
+          />
           <section id="list_users_container" className="mt-8">
             <ul>
               {users && users.length > 0 ? (
@@ -97,6 +93,11 @@ export default function Home() {
                 </div>
               )}
             </ul>
+            {users && users.length > 0 ? (
+              <div className="flex justify-start mt-8 col-span-2 text-gray-500">
+                Exibindo {users.length} clientes
+              </div>
+            ) : null}
           </section>
         </main>
       </div>
