@@ -68,7 +68,7 @@ export default function ClientCard({
           className="p-2 bg-amber-600 text-white rounded-md"
           href={`/user/${id}`}
         >
-          Editar
+          Detalhes
         </Link>
         <Button
           className="p-2 bg-red-600 text-white rounded-md"
