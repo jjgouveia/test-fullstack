@@ -5,7 +5,7 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "cpf" TEXT NOT NULL,
     "phone" TEXT,
-    "status" TEXT NOT NULL DEFAULT 'active',
+    "status" TEXT NOT NULL DEFAULT 'Ativo',
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL
 );
