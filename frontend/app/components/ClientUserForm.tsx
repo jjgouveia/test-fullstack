@@ -191,13 +191,11 @@ export default function CreateCustomerForm({
             {...register("status", { required: true })}
             disabled={editMode}
           >
-           
            { Object.values(StatusEnum).map((status) => (
               <option key={status} value={status}>
                 {status}
               </option>
             ))}
-           
           </select>
           {errors.status && (
             <span className="text-red-500">Campo obrigatório</span>
@@ -207,7 +205,9 @@ export default function CreateCustomerForm({
       {
         !editMode && (
           <div className="flex justify-end mt-8 gap-4">
-        <Button type="submit">Criar</Button>
+        <Button type="submit">{
+          customer ? "Atualizar" : "Criar"
+        }</Button>
         <Button
           className="p-2 bg-red-600 text-white rounded-md"
           onClick={() => setOpenCreateArea(false)}

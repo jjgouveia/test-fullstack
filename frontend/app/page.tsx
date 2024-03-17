@@ -11,15 +11,17 @@ import CustomerProps from "./types/customer.type";
 export default function Home() {
   const [users, setUsers] = useState<CustomerProps[]>([]);
   const [openCreateArea, setOpenCreateArea] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getCustomers().then((response) => {
       setUsers(response.data);
+      setLoading(false);
     });
   }, []);
   return (
     <div className="flex w-full min-h-screen flex-col">
-      <div className="flex w-full flex-1 justify-center mt-0 p-4 sm:mt-32 sm:p-0">
+      <div className="flex w-full flex-1 justify-center mt-0 p-4 sm:mt-16 sm:p-0">
         <main className="flex flex-col w-full sm:w-4/5 p-4 bg-gray-100 rounded-lg shadow-lg">
           <Hero
             openCreateArea={openCreateArea}
@@ -55,8 +57,14 @@ export default function Home() {
                   );
                 })
               ) : (
-                <div className="flex items-center">
-                  <LoadingDots />
+                <div className="flex items-center justify-center">
+                  {loading && users.length === 0 ? (
+                    <LoadingDots />
+                  ) : (
+                    <h2 className="mt-8 text-gray-700 text-xl font-bold tracking-wide">
+                      Nenhum cliente cadastrado
+                    </h2>
+                  )}
                 </div>
               )}
             </ul>

@@ -83,6 +83,7 @@ export default function ClientCard({
               confirmButtonColor: "#3085d6",
               cancelButtonColor: "#d33",
               confirmButtonText: "Sim!",
+              cancelButtonText: "Cancelar",
             });
             if (result.isConfirmed) {
               const response = await deleteCustomer(id);
