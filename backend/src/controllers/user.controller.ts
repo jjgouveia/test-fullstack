@@ -37,6 +37,18 @@ class UserController {
     }
   }
 
+  async show(request: Request, response: Response) {
+    const { id } = request.params;
+
+    try {
+      const user = await this.userService.findById({ id });
+
+      return response.status(HttpStatus.OK).json(user);
+    } catch (error: any) {
+      return response.status(error.status).json({ message: error.message });
+    }
+  }
+
   async update(request: Request, response: Response) {
     const { id } = request.params;
     const { name, email, cpf, status, phone } = request.body;

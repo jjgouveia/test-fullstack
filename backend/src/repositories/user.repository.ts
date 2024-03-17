@@ -27,6 +27,22 @@ class UsersRepository {
     });
   }
 
+  async findById({ id }: IDelete) {
+    return await prisma.user.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        cpf: true,
+        status: true,
+        phone: true,
+      },
+    });
+  }
+
   async update({ id, name, email, cpf, status, phone }: IUpdate) {
     await prisma.user.update({
       where: {

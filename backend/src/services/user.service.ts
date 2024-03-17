@@ -53,6 +53,19 @@ class UserService {
     }
   }
 
+  async findById({ id }: IDelete) {
+    try {
+      const data = UserValidator.validateId(id);
+      return await this.userRepository.findById({ id: data });
+    } catch (error: any) {
+      if (error.code === "P2025") {
+        throw new NotFoundException("Usuário não encontrado");
+      }
+
+      throw new InternalServerErrorException(error.message);
+    }
+  }
+
   async update({ id, name, email, cpf, status, phone }: IUpdate) {
     try {
       const data = UserValidator.validateUpdateUser({
