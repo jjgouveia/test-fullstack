@@ -9,7 +9,11 @@ export const api = axios.create({
 });
 
 export const createCustomer = async (data: CreateCustomerProps) => {
-  return await api.post("users", data);
+  try {
+    return await api.post("users", data);
+  } catch (error: any) {
+    return error.response;
+  }
 };
 
 export const getCustomers = async () => {
