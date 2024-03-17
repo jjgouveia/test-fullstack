@@ -168,8 +168,8 @@ export default function CreateCustomerForm({
             {...register("phone", {
               required: true,
               pattern: {
-                value: /^\(\d{2}\) \d{5}-\d{4}$/,
-                message: "Telefone inválido. Formato: (99) 99999-9999",
+                value: /^\(\d{2}\) (9\d{4}-\d{4}|[1,2,3,4,5,6,7,8]\d{3}-\d{4}$)/,
+                message: "Telefone deve ter o formato válido no Brasil. Ex: (99) 99999-9999 ou (99) 3999-9999",
               },
             })}
             placeholder={
