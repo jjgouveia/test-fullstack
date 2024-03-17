@@ -21,7 +21,11 @@ export const getCustomers = async () => {
 };
 
 export const getCustomer = async (id: string) => {
-  return await api.get(`users/${id}`);
+  try {
+    return await api.get(`users/${id}`);
+  } catch (error: any) {
+    return error.response;
+  }
 };
 
 export const updateCustomer = async (id: string, data: CreateCustomerProps) => {
