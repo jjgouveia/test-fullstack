@@ -1,14 +1,19 @@
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import UseMySwal from "../hooks/UseMySwal";
 import CreateCustomerProps from "../interfaces/ICreateUser";
-import { createCustomer } from "../services/api";
+import { createCustomer, updateCustomer } from "../services/api";
+import CustomerProps from "../types/customer.type";
 import StatusEnum from "../types/userStatus.enum";
 import Button from "./Button";
 
 export type CreateCustomerFormProps = {
-  users: any[];
-  setUsers: (users: any[]) => void;
+  users?: any[];
+  setUsers?: (users: any[]) => void;
   setOpenCreateArea: (value: boolean) => void;
+  editMode?: boolean
+  customer?: CustomerProps
+  setCustumer?: (customer: CustomerProps) => void;
 };
 
 const MySwal = UseMySwal();
@@ -17,18 +22,48 @@ export default function CreateCustomerForm({
   users,
   setUsers,
   setOpenCreateArea,
+  editMode,
+  customer: initialCustomer,
+  setCustumer,
 }: CreateCustomerFormProps) {
+  const [customer, setCustomer] = useState<CustomerProps | undefined>(initialCustomer);
   const {
     register,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = useForm();
 
+  useEffect(() => {
+    if (initialCustomer) {
+      Object.entries(initialCustomer).forEach(([key, value]) => {
+        setValue(key, value);
+      });
+    } 
+  }, [initialCustomer, setValue]);
+
+
   const onSubmit = handleSubmit(async (data) => {
+    if (!editMode && customer) {
+      const response = await updateCustomer(customer.id, data as CustomerProps)
+      if (response && response.status === 202) {
+        if (setCustumer) setCustumer(response.data);
+          setOpenCreateArea(false);
+          MySwal.fire({
+            icon: "success",
+            title: "Cliente atualizado com sucesso",
+          })
+      } else if (response && response.status === 409) {
+        MySwal.fire("Erro!", "CPF ou Email já cadastrado", "error");
+      } else {
+        MySwal.fire("Erro!", "Erro ao atualizar cliente", "error");
+      }
+    } else {
+
     const response = await createCustomer(data as CreateCustomerProps);
     if (response && response.status === 201) {
       const newUser = response.data;
-      setUsers([...users, newUser]);
+      if (users && setUsers) setUsers([...users, newUser]);
       setOpenCreateArea(false);
       MySwal.fire("Sucesso!", "Cliente criado com sucesso!", "success");
     } else if (response && response.status === 409) {
@@ -36,7 +71,8 @@ export default function CreateCustomerForm({
     } else {
       MySwal.fire("Erro!", "Erro ao criar cliente", "error");
     }
-  });
+  }
+});
 
   return (
     <form onSubmit={onSubmit}>
@@ -64,6 +100,10 @@ export default function CreateCustomerForm({
                 message: "Nome deve conter apenas letras",
               },
             })}
+            placeholder={
+              customer && customer.name ? customer.name : undefined
+            }
+            disabled={editMode}
           />
           {errors.name && (
             <span className="text-red-500">{String(errors.name.message)}</span>
@@ -84,6 +124,10 @@ export default function CreateCustomerForm({
                 message: "Email inválido. Formato: ada@lovelace.com",
               },
             })}
+            placeholder={
+              customer && customer.email ? customer.email : undefined
+            }
+            disabled={editMode}
           />
           {errors.email && (
             <span className="text-red-500">{String(errors.email.message)}</span>
@@ -104,6 +148,10 @@ export default function CreateCustomerForm({
                 message: "CPF inválido. Formato: 999.999.999-99",
               },
             })}
+            placeholder={
+              customer && customer.cpf ? customer.cpf : undefined
+            }
+            disabled={editMode}
           />
           {errors.cpf && (
             <span className="text-red-500">{String(errors.cpf.message)}</span>
@@ -124,6 +172,10 @@ export default function CreateCustomerForm({
                 message: "Telefone inválido. Formato: (99) 99999-9999",
               },
             })}
+            placeholder={
+              customer && customer.phone ? customer.phone : undefined
+            }
+            disabled={editMode}
           />
           {errors.phone && (
             <span className="text-red-500">{String(errors.phone.message)}</span>
@@ -137,20 +189,24 @@ export default function CreateCustomerForm({
             id="status"
             className="p-2 border border-gray-200 rounded-md"
             {...register("status", { required: true })}
+            disabled={editMode}
           >
-            <option selected value={StatusEnum.Ativo}>
-              Ativo
-            </option>
-            <option value={StatusEnum.Inativo}>Inativo</option>
-            <option value={StatusEnum.Aguardando}>Aguardando</option>
-            <option value={StatusEnum.Desativado}>Desativado</option>
+           
+           { Object.values(StatusEnum).map((status) => (
+              <option key={status} value={status}>
+                {status}
+              </option>
+            ))}
+           
           </select>
           {errors.status && (
             <span className="text-red-500">Campo obrigatório</span>
           )}
         </div>
       </div>
-      <div className="flex justify-end mt-8 gap-4">
+      {
+        !editMode && (
+          <div className="flex justify-end mt-8 gap-4">
         <Button type="submit">Criar</Button>
         <Button
           className="p-2 bg-red-600 text-white rounded-md"
@@ -159,6 +215,8 @@ export default function CreateCustomerForm({
           Cancelar
         </Button>
       </div>
+        )
+      }
       <hr className="my-8" />
     </form>
   );
