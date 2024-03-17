@@ -1,8 +1,8 @@
 enum StatusEnum {
-  ACTIVE = "active",
-  INACTIVE = "inactive",
-  PENDING = "pending",
-  DEACTIVATED = "deactivated",
+  ACTIVE = "Ativo",
+  INACTIVE = "Inativo",
+  PENDING = "Aguardando ativação",
+  DEACTIVATED = "Desativado",
 }
 
 export default StatusEnum;

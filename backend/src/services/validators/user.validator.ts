@@ -15,14 +15,12 @@ class UserValidator {
         message: "Nome deve conter somente letras",
       }),
     email: z.string().email(),
-    cpf: z
-      .string()
-      .length(11, { message: "CPF deve ter somente 11 números" })
-      .regex(/^\d+$/, { message: "CPF deve conter somente números" }),
-    phone: z
-      .string()
-      .length(11, { message: "Telefone deve ter somente 11 números" })
-      .regex(/^\d+$/, { message: "Telefone deve conter somente números" }),
+    cpf: z.string().regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, {
+      message: "CPF deve ter o formato 999.999.999-99",
+    }),
+    phone: z.string().regex(/^\(\d{2}\) \d{5}-\d{4}$/, {
+      message: "Telefone deve ter o formato (99) 99999-9999",
+    }),
     status: z.enum([
       StatusEnum.ACTIVE,
       StatusEnum.INACTIVE,
@@ -51,13 +49,15 @@ class UserValidator {
     email: z.string().email().optional(),
     cpf: z
       .string()
-      .length(11, { message: "CPF deve ter somente 11 números" })
-      .regex(/^\d+$/, { message: "CPF deve conter somente números" })
+      .regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, {
+        message: "CPF deve ter o formato 999.999.999-99",
+      })
       .optional(),
     phone: z
       .string()
-      .length(11, { message: "Telefone deve ter somente 11 números" })
-      .regex(/^\d+$/, { message: "Telefone deve conter somente números" })
+      .regex(/^\(\d{2}\) \d{5}-\d{4}$/, {
+        message: "Telefone deve ter o formato (99) 99999-9999",
+      })
       .optional(),
     status: z
       .enum([
