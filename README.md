@@ -39,3 +39,57 @@ Adote boas práticas de desenvolvimento e arquitetura.
 ## Instruções Finais:
 
 Após concluir o desafio, crie um pull request neste repositório com duas pastas separadas: uma contendo o projeto frontend e outra com o projeto backend, para que possamos avaliar seu trabalho. Boa sorte!
+
+# Resolução
+
+## Frontend
+
+- Next.js v14
+- React Hook Forms
+- TailwindCSS
+- SweetAlert2
+
+## Backend
+
+- Node.js v21
+- Express
+- Zod
+- SQLite
+- Helmet
+- Prisma
+- Jest
+- Sinon
+- Express Rate Limit
+
+# Rotas da API
+
+- Listar clientes: GET /api/v1/users
+- Listar cliente por id: GET /api/v1/users/:id
+- Criar cliente: POST /api/v1/users
+- Atualizar cliente: PATCH /api/v1/users/:id
+- Deletar cliente: DELETE /api/v1/users/:id
+
+## Instruções
+
+## Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+## Backend
+
+```bash
+cd backend
+npm install
+npm run predev
+```
+
+## Testes
+
+```bash
+cd backend
+npm run test
+```

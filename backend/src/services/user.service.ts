@@ -46,12 +46,20 @@ class UserService {
   }
 
   async findAll() {
-    return await this.userRepository.findAll();
+    try {
+      return await this.userRepository.findAll();
+    } catch (error: any) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   async findById({ id }: IDelete) {
-    const data = UserValidator.validateId(id);
-    return await this.userRepository.findById({ id: data });
+    try {
+      const data = UserValidator.validateId(id);
+      return await this.userRepository.findById({ id: data });
+    } catch (error: any) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   async update({ id, name, email, cpf, status, phone }: IUpdate) {

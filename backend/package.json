@@ -11,6 +11,7 @@
     "prisma": "npx prisma generate",
     "start": "node ./dist/server.js",
     "dev": "npx -y ts-node ./src/server.ts",
+    "predev": "npx prisma generate && npx prisma migrate dev && npx -y ts-node ./src/server.ts",
     "prestart": "npx -y tsc && npx prisma migrate dev && node ./dist/server.js"
   },
   "keywords": [],
