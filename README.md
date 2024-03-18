@@ -1,4 +1,4 @@
-# Teste Fullstack: Aplicativo de Gerenciamento de Clientes
+# Teste Fullstack: Aplicativo de Gerenciamento de Clientes - RESOLVIDO
 
 ## Descrição:
 
