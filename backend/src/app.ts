@@ -10,7 +10,7 @@ class App {
 
   constructor() {
     this.app = express.default();
-    this.port = process.env.PORT || "3000";
+    this.port = process.env.PORT || "2358";
 
     this.config();
   }
