@@ -46,24 +46,12 @@ class UserService {
   }
 
   async findAll() {
-    try {
-      return await this.userRepository.findAll();
-    } catch (error: any) {
-      throw new BadRequestException(error.message);
-    }
+    return await this.userRepository.findAll();
   }
 
   async findById({ id }: IDelete) {
-    try {
-      const data = UserValidator.validateId(id);
-      return await this.userRepository.findById({ id: data });
-    } catch (error: any) {
-      if (error.code === "P2025") {
-        throw new NotFoundException("Usuário não encontrado");
-      }
-
-      throw new InternalServerErrorException(error.message);
-    }
+    const data = UserValidator.validateId(id);
+    return await this.userRepository.findById({ id: data });
   }
 
   async update({ id, name, email, cpf, status, phone }: IUpdate) {
@@ -98,8 +86,6 @@ class UserService {
       if (error.code === "P2025") {
         throw new NotFoundException("Usuário não encontrado");
       }
-
-      throw new InternalServerErrorException(error.message);
     }
   }
 
@@ -113,11 +99,7 @@ class UserService {
         throw new NotFoundException("Usuário não encontrado");
       }
 
-      if (error.status == HttpStatus.BAD_REQUEST) {
-        throw new BadRequestException(error.message);
-      }
-
-      throw new InternalServerErrorException(error.message);
+      throw new BadRequestException(error.message);
     }
   }
 }
